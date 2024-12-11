@@ -1,4 +1,12 @@
-export interface FestivalTypeID extends FestivalType {
+export interface StoreType {
+    name: string;
+    address: string;
+    supplier_id: array;
+    isDeleted: boolean;
+    end_date: string;
+}
+
+export interface StoreTypeID extends StoreType {
     _id: string;
 }
 
@@ -9,4 +17,4 @@ export interface IAuthContext {
     isLoading: boolean;
 }
 
-export type IResponseType = FestivalTypeID
+export type IResponseType = StoreTypeID
