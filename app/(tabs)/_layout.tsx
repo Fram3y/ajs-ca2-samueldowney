@@ -12,9 +12,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="festivals/index"
+        name="stores/index"
         options={{
-          title: 'Festivals',
+          title: 'Stores',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="heart" color={color} />,
         }}
       />
@@ -26,7 +26,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen 
-        name='festivals/[id]/index'
+        name='stores/[id]/index'
         options={{
           href: null
         }}

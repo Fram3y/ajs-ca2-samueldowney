@@ -2,8 +2,7 @@ export interface StoreType {
     name: string;
     address: string;
     supplier_id: array;
-    isDeleted: boolean;
-    end_date: string;
+    isDeleted?: boolean;
 }
 
 export interface StoreTypeID extends StoreType {

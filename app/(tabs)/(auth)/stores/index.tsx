@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { Text, StyleSheet, FlatList } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import StoreItem from '@/components/StoreItem';
-import { StoreType, StoreTypeID } from '@/types';
+import { StoreTypeID } from '@/types';
 import { Link } from 'expo-router';
 
 export default function Tab() {
