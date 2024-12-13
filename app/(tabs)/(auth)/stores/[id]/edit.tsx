@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { StoreType } from "@/types";
+import { StoreType, SupplierType } from "@/types";
 import useAPI from '@/hooks/useAPI';
+import axios from "axios";
 
 export default function Page() {
     const router = useRouter();
     const [store, setStore] = useState<StoreType | null>(null);
+    const [suppliers, setSuppliers] = useState([]);
 
     const { session } = useSession();
     const { id } = useLocalSearchParams();
@@ -30,6 +32,17 @@ export default function Page() {
             setForm(data);
         });
     }, [id]);
+
+    useEffect(() => {
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`)
+        .then(res => {
+            setSuppliers(res.data);
+            console.log(res.data);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+    })
 
     const handleChange = (e: any) => {
         setForm(prevState => ({

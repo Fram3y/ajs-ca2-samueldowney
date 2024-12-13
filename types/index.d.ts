@@ -5,7 +5,18 @@ export interface StoreType {
     isDeleted?: boolean;
 }
 
+export interface SupplierType {
+    name: string;
+    product_id: array;
+    store_id: array;
+    isDeleted?: boolean;
+}
+
 export interface StoreTypeID extends StoreType {
+    _id: string;
+}
+
+export interface SupplierTypeID extends SupplierType {
     _id: string;
 }
 
