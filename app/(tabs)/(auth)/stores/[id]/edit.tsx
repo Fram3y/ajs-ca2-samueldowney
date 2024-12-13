@@ -38,9 +38,7 @@ export default function Page() {
         }));
     };
 
-    const handleSubmit = () => {
-        console.log(form);
-        
+    const handleSubmit = () => {        
         putRequest(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores/${id}`, form, {
             headers: {
                 Authorization: `Bearer ${session}`
@@ -72,7 +70,7 @@ export default function Page() {
                 id='address'
             />
 
-            <Text>Supplier</Text>
+            <Text>Suppliers</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Supplier'
