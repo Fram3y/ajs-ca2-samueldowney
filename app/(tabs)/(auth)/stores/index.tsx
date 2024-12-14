@@ -1,4 +1,4 @@
-import { Text, StyleSheet, FlatList } from 'react-native';
+import { Text, StyleSheet, FlatList, Button } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,7 +12,6 @@ export default function Tab() {
     useEffect(() => {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`)
             .then(res => {
-                console.log(res.data);
                 setStores(res.data)
             })
             .catch(e => {
@@ -25,6 +24,10 @@ export default function Tab() {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
+            <Link href="/stores/create">
+                    <Button title="Create New Store" color="blue" />
+                </Link>
+
                 <FlatList
                     data={stores}
                     renderItem={({ item }) => <StoreItem store={item} />}
