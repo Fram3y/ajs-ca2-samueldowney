@@ -22,7 +22,6 @@ export default function Page() {
     useEffect(() => {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`)
             .then(res => {
-                console.log(res.data);
                 setSuppliers(res.data)
             })
             .catch(e => {
