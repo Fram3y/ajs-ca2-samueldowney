@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Button } from 'react-native';
 import LoginForm from '@/components/LoginForm';
 import { useSession } from '@/contexts/AuthContext';
-import { IAuthContext } from '@/types';
 
 export default function Tab() {
   const { session, signOut } = useSession();

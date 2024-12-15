@@ -6,6 +6,7 @@ export default function Layout() {
     <SessionProvider>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
       </Stack>
     </SessionProvider>
   );

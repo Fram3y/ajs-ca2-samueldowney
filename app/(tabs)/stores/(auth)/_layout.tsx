@@ -1,7 +1,6 @@
 import { Text } from 'react-native';
 import { Slot, Redirect } from 'expo-router';
 import { useSession } from '@/contexts/AuthContext';
-import { IAuthContext } from '@/types';
 
 export default function Root() {
     const { session, isLoading }:any = useSession();

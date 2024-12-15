@@ -12,11 +12,47 @@ export interface SupplierType {
     isDeleted?: boolean;
 }
 
+export interface RoleType {
+    title: string;
+    description: string;
+    isDeleted?: boolean;
+}
+
+export interface ProductType {
+    name: string;
+    description: string;
+    price: number;
+    isDeleted?: boolean;
+}
+
+export interface EmployeeType {
+    name: string;
+    email: string;
+    address: string;
+    dob: date;
+    phone_number: string;
+    store_id: string;
+    role_id: string;
+    isDeleted?: boolean;
+}
+
 export interface StoreTypeID extends StoreType {
     _id: string;
 }
 
 export interface SupplierTypeID extends SupplierType {
+    _id: string;
+}
+
+export interface RoleTypeID extends RoleType {
+    _id: string;
+}
+
+export interface ProductTypeID extends ProductType {
+    _id: string;
+}
+
+export interface EmployeeTypeID extends EmployeeType {
     _id: string;
 }
 
