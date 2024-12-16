@@ -21,12 +21,8 @@ export default function Page() {
 
     useEffect(() => {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`)
-            .then(res => {
-                setSuppliers(res.data)
-            })
-            .catch(e => {
-                console.log(e);
-            });
+            .then(res => { setSuppliers(res.data) })
+            .catch(e => { console.log(e); });
     }, []);
 
     const handleChange = (e: any) => {
@@ -46,8 +42,6 @@ export default function Page() {
     };
 
     const handleSubmit = () => {
-        console.log(form);
-
         postRequest(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, form, {
             headers: {
                 Authorization: `Bearer ${session}`

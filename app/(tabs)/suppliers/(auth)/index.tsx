@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { Text, StyleSheet, FlatList, Button } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocalSearchParams } from 'expo-router';
+import { Link } from 'expo-router';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { SupplierType, SupplierTypeID } from '@/types';
 import SupplierItem from '@/components/SupplierItem';
@@ -9,10 +9,9 @@ import { useSession } from '@/contexts/AuthContext';
 
 export default function Tab() {
     const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
-    const [stores, setStores] = useState([]);   // Stores data
-    const [products, setProducts] = useState([]); // Products data
+    const [stores, setStores] = useState([]);
+    const [products, setProducts] = useState([]);
 
-    const { id } = useLocalSearchParams();
     const { session } = useSession();
 
     useEffect(() => {
@@ -49,15 +48,19 @@ export default function Tab() {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
+                <Link href="/suppliers/create">
+                    <Button title="Create New Store" color="blue" />
+                </Link>
+
                 <FlatList
                     data={suppliers}
                     renderItem={({ item }) => {
                         const storeList = stores.filter(store =>
-                            store.supplier_id.includes(item._id) // Match supplier's ID with stores
+                            store.supplier_id.includes(item._id)
                         );
 
                         const productList = products.filter(product =>
-                            item.product_id.includes(product._id) // Match supplier's product IDs
+                            item.product_id.includes(product._id)
                         );
 
                         return (
