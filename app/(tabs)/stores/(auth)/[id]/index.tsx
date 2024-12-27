@@ -22,18 +22,13 @@ export default function Tab() {
         setIsLoading(true);
 
         // Fetch Store Data
-        axios.get(
-            `https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${session}`
-                }
-            })
-            .then(response => {
-                setStore(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching store:', error);
-            });
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores/${id}`, {
+            headers: {
+                Authorization: `Bearer ${session}`
+            }
+        })
+        .then(res => setStore(res.data))
+        .catch(err => console.error('Error fetching store:', err));
 
         // Fetch Suppliers Data
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`, {
@@ -41,21 +36,15 @@ export default function Tab() {
                 Authorization: `Bearer ${session}`
             }
         })
-            .then(supRes => {
-                setSuppliers(supRes.data);
-            })
-            .catch(e => {
-                console.error('Error fetching suppliers:', e);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        .then(res => setSuppliers(res.data))
+        .catch(err => console.error('Error fetching suppliers:', err))
+        .finally(() => setIsLoading(false));
     }, [id, session]);
 
     // Filter Suppliers based on store's supplier_id
     useEffect(() => {
         if (store && store.data?.supplier_id && suppliers.length > 0) {
-            const filtered = suppliers.filter(supplier => 
+            const filtered = suppliers.filter(supplier =>
                 store.data.supplier_id.includes(supplier._id.toString()) // Ensure supplier._id is compared as a string
             );
             setFilteredSuppliers(filtered);

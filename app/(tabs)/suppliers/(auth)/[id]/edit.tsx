@@ -34,7 +34,7 @@ export default function Page() {
                     product_id: res.data.product_id || []
                 });
             })
-            .catch(e => { console.log(e); })
+            .catch(err => console.error(err))
 
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products`, {
             headers: { Authorization: `Bearer ${session}` }
@@ -65,7 +65,7 @@ export default function Page() {
             headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => router.push(`/suppliers/${res.data._id}`))
-            .catch(e => console.log(e))
+            .catch(err => console.error(err))
     };
 
     if (isLoading === true) return <Text>Loading API...</Text>;

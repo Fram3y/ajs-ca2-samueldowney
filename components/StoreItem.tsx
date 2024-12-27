@@ -27,7 +27,7 @@ export default function StoreItem({ store, suppliers }: MyProps) {
             )}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     item: {

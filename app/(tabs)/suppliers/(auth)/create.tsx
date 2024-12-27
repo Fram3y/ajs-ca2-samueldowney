@@ -23,7 +23,7 @@ export default function Page() {
             }
         })
             .then(res => { setProducts(res.data); })
-            .catch(e => { console.log(e); });
+            .catch(err => { console.error(err); });
     }, []);
 
     const handleChange = (e: any) => {

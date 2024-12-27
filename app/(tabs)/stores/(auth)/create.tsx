@@ -86,6 +86,7 @@ export default function Page() {
             ))}
 
             <Text>{error}</Text>
+            
             <Button
                 onPress={handleSubmit}
                 title="Submit"

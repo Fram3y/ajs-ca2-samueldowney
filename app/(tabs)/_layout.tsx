@@ -20,6 +20,10 @@ export default function TabLayout() {
         name="suppliers"
         options={{ headerShown: false }} // Supplier Screen
       />
+      <Tabs.Screen
+        name="products"
+        options={{ headerShown: false }} // Products Screen
+      />
     </Tabs>
   );
 }
@@ -30,7 +34,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
   return (
     <View style={styles.tabBar}>
       {/* Home Tab */}
-      <Link href="/(tabs)/index" asChild>
+      <Link href="/" asChild>
         <TouchableOpacity style={styles.tabItem}>
           <FontAwesome
             name="home"
@@ -49,7 +53,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
             size={28}
             color={state.index === 1 ? 'blue' : 'gray'}
           />
-          <Text style={{ color: state.index === 1 ? 'blue' : 'gray' }}>Store</Text>
+          <Text style={{ color: state.index === 1 ? 'blue' : 'gray' }}>Stores</Text>
         </TouchableOpacity>
       </Link>
 
@@ -62,8 +66,20 @@ function CustomTabBar({ state, descriptors, navigation }) {
             color={state.index === 2 ? 'blue' : 'gray'}
           />
           <Text style={{ color: state.index === 2 ? 'blue' : 'gray' }}>
-            Supplier
+            Suppliers
           </Text>
+        </TouchableOpacity>
+      </Link>
+
+      {/* Products Tab */}
+      <Link href="/(tabs)/products" asChild>
+        <TouchableOpacity style={styles.tabItem}>
+          <FontAwesome
+            name="tags"
+            size={28}
+            color={state.index === 3 ? 'blue' : 'gray'}
+          />
+          <Text style={{ color: state.index === 3 ? 'blue' : 'gray' }}>Products</Text>
         </TouchableOpacity>
       </Link>
     </View>
@@ -83,5 +99,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-

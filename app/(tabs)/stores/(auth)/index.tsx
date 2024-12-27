@@ -1,9 +1,9 @@
-import { Text, StyleSheet, FlatList, Button, View } from 'react-native';
+import { Text, StyleSheet, FlatList, Button } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import { StoreTypeID, SupplierTypeID } from '@/types'; // Assuming SupplierType is defined somewhere
+import { StoreTypeID } from '@/types';
 import StoreItem from '@/components/StoreItem';
 
 export default function Tab() {
@@ -12,20 +12,12 @@ export default function Tab() {
 
     useEffect(() => {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`)
-            .then(res => {
-                setStores(res.data);
-            })
-            .catch(e => {
-                console.log('Error fetching stores:', e);
-            });
+            .then(res => setStores(res.data))
+            .catch(err => console.log('Error fetching stores:', err));
 
         axios.get('https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers')
-            .then(res => {
-                setSuppliers(res.data);
-            })
-            .catch(e => {
-                console.log('Error fetching suppliers:', e);
-            });
+            .then(res => setSuppliers(res.data))
+            .catch(e => console.log('Error fetching suppliers:', e));
     }, []);
 
     const getSuppliersForStore = (supplierIds: string[]) => {
