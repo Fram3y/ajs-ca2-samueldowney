@@ -24,24 +24,36 @@ export default function TabLayout() {
         name="products"
         options={{ headerShown: false }} // Products Screen
       />
+      <Tabs.Screen
+        name="roles"
+        options={{ headerShown: false }} // Roles Screen
+      />
     </Tabs>
   );
 }
 
 function CustomTabBar({ state, descriptors, navigation }) {
   const segments = useSegments();
+  
+  // Helper function to determine active state
+  const isActive = (routeName) => {
+    const currentRoute = state.routes[state.index].name;
+    return currentRoute === routeName || segments.includes(routeName);
+  };
 
   return (
-    <View style={styles.tabBar}>
+    <View style={styles.tabBar} key={state.index}>
       {/* Home Tab */}
       <Link href="/" asChild>
         <TouchableOpacity style={styles.tabItem}>
           <FontAwesome
             name="home"
             size={28}
-            color={state.index === 0 ? 'blue' : 'gray'}
+            color={isActive("index") ? "blue" : "gray"}
           />
-          <Text style={{ color: state.index === 0 ? 'blue' : 'gray' }}>Home</Text>
+          <Text style={{ color: isActive("index") ? "blue" : "gray" }}>
+            Home
+          </Text>
         </TouchableOpacity>
       </Link>
 
@@ -51,9 +63,11 @@ function CustomTabBar({ state, descriptors, navigation }) {
           <FontAwesome
             name="shopping-cart"
             size={28}
-            color={state.index === 1 ? 'blue' : 'gray'}
+            color={isActive("stores") ? "blue" : "gray"}
           />
-          <Text style={{ color: state.index === 1 ? 'blue' : 'gray' }}>Stores</Text>
+          <Text style={{ color: isActive("stores") ? "blue" : "gray" }}>
+            Stores
+          </Text>
         </TouchableOpacity>
       </Link>
 
@@ -63,9 +77,9 @@ function CustomTabBar({ state, descriptors, navigation }) {
           <FontAwesome
             name="truck"
             size={28}
-            color={state.index === 2 ? 'blue' : 'gray'}
+            color={isActive("suppliers") ? "blue" : "gray"}
           />
-          <Text style={{ color: state.index === 2 ? 'blue' : 'gray' }}>
+          <Text style={{ color: isActive("suppliers") ? "blue" : "gray" }}>
             Suppliers
           </Text>
         </TouchableOpacity>
@@ -77,14 +91,30 @@ function CustomTabBar({ state, descriptors, navigation }) {
           <FontAwesome
             name="tags"
             size={28}
-            color={state.index === 3 ? 'blue' : 'gray'}
+            color={isActive("products") ? "blue" : "gray"}
           />
-          <Text style={{ color: state.index === 3 ? 'blue' : 'gray' }}>Products</Text>
+          <Text style={{ color: isActive("products") ? "blue" : "gray" }}>
+            Products
+          </Text>
+        </TouchableOpacity>
+      </Link>
+
+      {/* Roles Tab */}
+      <Link href="/(tabs)/roles" asChild>
+        <TouchableOpacity style={styles.tabItem}>
+          <FontAwesome
+            name="users"
+            size={28}
+            color={isActive("roles") ? "blue" : "gray"}
+          />
+          <Text style={{ color: isActive("roles") ? "blue" : "gray" }}>
+            Roles
+          </Text>
         </TouchableOpacity>
       </Link>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   tabBar: {

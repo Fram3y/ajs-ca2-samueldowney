@@ -1,33 +1,32 @@
-import { Text, StyleSheet, Button } from 'react-native';
-import { useEffect, useState } from 'react';
-import { Link, useRouter } from 'expo-router';
-import { useSession } from '@/contexts/AuthContext';
-import { useLocalSearchParams } from 'expo-router';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { ProductType } from '@/types';
-import axios from 'axios';
+import { useSession } from "@/contexts/AuthContext";
+import { RoleType } from "@/types";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Text, StyleSheet, Button } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function Tab() {
-    const [product, setProduct] = useState<ProductType | null>(null);
+    const [role, setRole] = useState<RoleType | null>(null)
 
     const { id } = useLocalSearchParams();
     const { session } = useSession();
     const router = useRouter();
 
-    // Getting product by Id
+    // Getting role by Id
     useEffect(() => {
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products/${id}`, {
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/roles/${id}`, {
             headers: {
                 Authorization: `Bearer ${session}`
             }
         })
-        .then(res => setProduct(res.data))  // Using the response data to set the product
-        .catch(err => console.error('Error fetching product:', err));   // Checking for errors
-    }, [id, session]); // UseEffect will run again if the id or session data changes
+        .then(res => setRole(res.data)) // Using the response data to set the role
+        .catch(err => console.error('Error fetching role:', err));  // Checking for errors
+    }, [id, session]);  // UseEffect will run again if the id or session data changes
 
     const handleDelete = async () => {
         try {
-            const response = await axios.put(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products/${id}`,
+            const response = await axios.put(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/roles/${id}`,
                 { isDeleted: true },
                 {
                     headers: {
@@ -38,35 +37,35 @@ export default function Tab() {
             );
 
             if (response.data && response.data.isDeleted !== undefined) {
-                router.push('/products');
+                router.push('/roles');
             } else {
-                console.error('Failed to update product:', response.data.message || 'No success flag');
+                console.error('Failed to update role:', response.data.message || 'No success flag');
             }
         } catch (err) {
-            console.error('Error updating product:', err);
-        }
+            console.error('Error updating role:', err);
+        };
     };
 
     const handleGoBack = () => {
-        router.push('/products');
+        router.push('/roles');
     };
 
-    if (!product || !product.data) return <Text style={styles.loadingText}>Store not found</Text>;
+    if (!role || !role.data) return <Text style={styles.loadingText}>Role not found</Text>
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
-                <Text style={styles.storeName}>{product.data.name}</Text>
-                <Text style={styles.storeDescription}>{product.data.description}</Text>
-                <Text style={styles.storePrice}>${product.data.price}</Text>
+                {/* Content */}
+                <Text style={styles.storeName}>{role.data.title}</Text>
+                <Text style={styles.storeDescription}>{role.data.description}</Text>
 
                 {/* Edit Button */}
-                <Link href={`/products/${product.data._id}/edit`}>
-                    <Button title="Edit Store" color="blue" />
+                <Link href={`/roles/${role.data._id}/edit`}>
+                    <Button title="Edit Role" color="blue" />
                 </Link>
 
                 {/* Delete Button */}
-                <Button
+                <Button 
                     title="Delete"
                     color="#D32F2F"
                     onPress={handleDelete}
@@ -74,14 +73,14 @@ export default function Tab() {
                 />
 
                 {/* Go Back Button */}
-                <Button
+                <Button 
                     title="Go Back"
                     onPress={handleGoBack}
                     style={styles.goBackButton}
                 />
             </SafeAreaView>
         </SafeAreaProvider>
-    );
+    )
 };
 
 const styles = StyleSheet.create({
