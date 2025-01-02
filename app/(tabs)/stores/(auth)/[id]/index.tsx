@@ -11,6 +11,7 @@ export default function Tab() {
     const [store, setStore] = useState<StoreType | null>(null);
     const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
     const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierType[]>([]);
+
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
 
@@ -72,7 +73,7 @@ export default function Tab() {
                 console.error('Failed to update store:', response.data.message || 'No success flag');
             }
         } catch (error) {
-            console.error('Error updating store:', error);
+            console.error('Error deleting store:', error);
         } finally {
             setIsUpdating(false);
         }
@@ -111,6 +112,7 @@ export default function Tab() {
                     <Button title="Edit Store" color="blue" />
                 </Link>
 
+                {/* Delete Button */}
                 <Button
                     title="Delete"
                     color="red"
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
     },
     goBackButton: {
         marginTop: 20,
-        backgroundColor: '#4CAF50',  // Green color for "Go Back" button
-        width: '80%',  // Make the button a bit wider
+        backgroundColor: '#4CAF50',
+        width: '80%', 
     },
 });

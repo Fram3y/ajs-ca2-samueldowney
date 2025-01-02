@@ -112,6 +112,20 @@ function CustomTabBar({ state, descriptors, navigation }) {
           </Text>
         </TouchableOpacity>
       </Link>
+
+      {/* Employees Tab */}
+      <Link href="/(tabs)/employees" asChild>
+        <TouchableOpacity style={styles.tabItem}>
+          <FontAwesome 
+          name="id-badge" 
+          size={28} 
+          color={isActive("employees") ? "blue" : "gray"} 
+          />
+          <Text style={{ color: isActive("employees") ? "blue" : "gray" }}>
+            Employees
+          </Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 };

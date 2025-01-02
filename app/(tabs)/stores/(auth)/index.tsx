@@ -17,7 +17,7 @@ export default function Tab() {
 
         axios.get('https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers')
             .then(res => setSuppliers(res.data))
-            .catch(e => console.log('Error fetching suppliers:', e));
+            .catch(err => console.error('Error fetching suppliers:', err));
     }, []);
 
     const getSuppliersForStore = (supplierIds: string[]) => {

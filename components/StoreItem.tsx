@@ -5,7 +5,7 @@ import { StoreTypeID, SupplierType } from '@/types';
 interface MyProps {
     store: StoreTypeID;
     suppliers: SupplierType;
-}
+};
 
 export default function StoreItem({ store, suppliers }: MyProps) {
     return (

@@ -16,7 +16,7 @@ export default function Page() {
     });
 
     useEffect(() => {
-        // Fetch products only
+        // Fetch products
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products`, {
             headers: {
                 Authorization: `Bearer ${session}`
@@ -50,12 +50,12 @@ export default function Page() {
             }
         })
             .then(res => { router.push(`/suppliers`); })
-            .catch(e => { console.log(e) })
+            .catch(err => { console.error(`Error registering supplier`, err) })
     };
 
     return (
         <View>
-            <Text>Name</Text>
+            <Text>Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Name'
@@ -64,7 +64,7 @@ export default function Page() {
                 id='name'
             />
 
-            <Text>Products</Text>
+            <Text>Products:</Text>
             {products.map((product) => (
                 <View key={product._id} style={styles.checkboxContainer}>
                     <CheckBox
