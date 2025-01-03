@@ -1,57 +1,85 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import { StoreTypeID, SupplierType } from '@/types';
+import { StoreTypeID, SupplierTypeID } from '@/types';
 
 interface MyProps {
     store: StoreTypeID;
-    suppliers: SupplierType;
+    suppliers: SupplierTypeID[];
 };
 
 export default function StoreItem({ store, suppliers }: MyProps) {
     return (
-        <View style={styles.item}>
-            <Link href={`/stores/${store._id}`}>
-                <Text style={styles.storeName}>{store.name}</Text>
-            </Link>
-            <Text style={styles.storeAddress}>{store.address}</Text>
+        <View style={styles.card}>
+            <View style={styles.textContainer}>
+                {/* Store Name */}
+                <Link href={`/stores/${store._id}`}>
+                    <Text style={styles.storeName}>{store.name}</Text>
+                </Link>
 
-            <Text style={styles.suppliersTitle}>Suppliers:</Text>
-            {suppliers.length > 0 ? (
-                suppliers.map((supplier) => (
-                    <Text key={supplier._id} style={styles.supplier}>
-                        {supplier.name}
-                    </Text>
-                ))
-            ) : (
-                <Text>No suppliers available</Text>
-            )}
+                {/* Store Address */}
+                <Text style={styles.storeAddress}>{store.address}</Text>
+
+                {/* Suppliers List */}
+                <Text style={styles.infoTitle}>Suppliers:</Text>
+                {suppliers.length > 0 ? (
+                    suppliers.map((supplier) => (
+                        <Text key={supplier._id} style={styles.infoText}>
+                            {supplier.name}
+                        </Text>
+                    ))
+                ) : (
+                    <Text style={styles.noData}>No suppliers available</Text>
+                )}
+            </View>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#eaeaea',
-        padding: 20,
+    card: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FEF7FF", // Matches SupplierItem's background color
+        borderRadius: 12,
+        padding: 16,
         marginVertical: 8,
         marginHorizontal: 16,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    textContainer: {
+        flex: 1,
+        marginRight: 16,
     },
     storeName: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: "bold",
+        color: "#333",
+        marginBottom: 4,
     },
     storeAddress: {
         fontSize: 14,
-        color: '#555',
+        color: "#333",
+        marginBottom: 4,
     },
-    suppliersTitle: {
+    infoTitle: {
         fontSize: 16,
-        marginTop: 10,
-        fontWeight: 'bold',
+        fontWeight: "500",
+        color: "#333",
+        marginTop: 4,
     },
-    supplier: {
+    infoText: {
         fontSize: 14,
-        color: '#333',
-        marginTop: 5,
+        color: "#333",
+        marginBottom: 4,
+    },
+    noData: {
+        fontSize: 14,
+        color: "#999",
+        fontStyle: "italic",
+        marginTop: 4,
     },
 });
