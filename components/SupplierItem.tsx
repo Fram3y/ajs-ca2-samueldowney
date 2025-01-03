@@ -1,73 +1,92 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Link } from 'expo-router';
-import { SupplierType, StoreTypeID, ProductTypeID } from '@/types';
+import { SupplierTypeID, StoreTypeID, ProductTypeID } from '@/types';
 
 interface MyProps {
-    supplier: SupplierType;
+    supplier: SupplierTypeID; // Use SupplierTypeID instead of SupplierType
     stores: StoreTypeID[];
     products: ProductTypeID[];
 }
 
 export default function SupplierItem({ supplier, stores, products }: MyProps) {
     return (
-        <View style={styles.item}>
-            {/* Supplier Name */}
-            <Link href={`/suppliers/${supplier._id}`}>
-                <Text style={styles.supplierName}>{supplier.name}</Text>
-            </Link>
+        <View style={styles.card}>
+            <View style={styles.textContainer}>
 
-            {/* Store List */}
-            <Text style={styles.sectionTitle}>Stores:</Text>
-            {stores.length > 0 ? (
-                stores.map((store) => (
-                    <Text key={store._id} style={styles.infoText}>
-                        {store.name}
-                    </Text>
-                ))
-            ) : (
-                <Text style={styles.noData}>No stores available</Text>
-            )}
+                {/* Supplier Name */}
+                <Link href={`/suppliers/${supplier._id}`}>
+                    <Text style={styles.supplierName}>{supplier.name}</Text>
+                </Link>
 
-            {/* Product List */}
-            <Text style={styles.sectionTitle}>Products:</Text>
-            {products.length > 0 ? (
-                products.map((product) => (
-                    <Text key={product._id} style={styles.infoText}>
-                        {product.name}
-                    </Text>
-                ))
-            ) : (
-                <Text style={styles.noData}>No products available</Text>
-            )}
+                {/* Store List */}
+                <Text style={styles.infoTitle}>Stores:</Text>
+                {stores.length > 0 ? (
+                    stores.map((store) => (
+                        <Text key={store._id} style={styles.infoText}>
+                            {store.name}
+                        </Text>
+                    ))
+                ) : (
+                    <Text style={styles.noData}>No stores available</Text>
+                )}
+
+                {/* Product List */}
+                <Text style={styles.infoTitle}>Products:</Text>
+                {products.length > 0 ? (
+                    products.map((product) => (
+                        <Text key={product._id} style={styles.infoText}>
+                            {product.name}
+                        </Text>
+                    ))
+                ) : (
+                    <Text style={styles.noData}>No products available</Text>
+                )}
+
+            </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#eaeaea',
-        padding: 20,
+    card: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FEF7FF",
+        borderRadius: 12,
+        padding: 16,
         marginVertical: 8,
         marginHorizontal: 16,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    textContainer: {
+        flex: 1,
+        marginRight: 16,
     },
     supplierName: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: "bold",
+        color: "#333",
+        marginBottom: 4,
     },
-    sectionTitle: {
+    infoTitle: {
         fontSize: 16,
-        marginTop: 10,
-        fontWeight: 'bold',
+        fontWeight: "500",
+        color: "#333",
+        marginTop: 4,
     },
     infoText: {
         fontSize: 14,
-        color: '#333',
-        marginTop: 5,
+        color: "#333",
+        marginBottom: 4,
     },
     noData: {
         fontSize: 14,
-        color: '#777',
-        marginTop: 5,
-        fontStyle: 'italic',
+        color: "#999",
+        fontStyle: "italic",
+        marginTop: 4,
     },
 });

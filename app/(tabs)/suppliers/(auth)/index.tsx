@@ -17,30 +17,24 @@ export default function Tab() {
     useEffect(() => {
         // Fetch Suppliers
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
+            headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => setSuppliers(res.data))
-            .catch(e => console.log(e));
+            .catch(err => console.error(err));
 
         // Fetch Stores
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
+            headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => setStores(res.data))
-            .catch(e => console.log(e));
+            .catch(err => console.error(err));
 
         // Fetch Products
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
+            headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => setProducts(res.data))
-            .catch(e => console.log(e));
+            .catch(err => console.error(err));
     }, []);
 
     if (suppliers.length === 0) return <Text>No suppliers found</Text>

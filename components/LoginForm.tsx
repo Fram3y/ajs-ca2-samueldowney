@@ -1,4 +1,4 @@
-import { Text, TextInput, StyleSheet, Button } from 'react-native';
+import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
 import { useState } from 'react';
 import axios from 'axios';
 import { useSession } from '@/contexts/AuthContext';
@@ -38,7 +38,7 @@ export default function LoginForm() {
     };
 
     return (
-        <>
+        <View>
             <TextInput
                 style={styles.input}
                 placeholder='Email'
@@ -62,7 +62,7 @@ export default function LoginForm() {
                 title="Submit"
                 color="#841584"
             />
-        </>
+        </View>
     );   
 }
 
