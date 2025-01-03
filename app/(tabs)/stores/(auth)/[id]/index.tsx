@@ -4,13 +4,13 @@ import { Link, useRouter } from 'expo-router';
 import { useSession } from '@/contexts/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { StoreType, SupplierType } from '@/types';
+import { StoreType, SupplierTypeID } from '@/types';
 import axios from 'axios';
 
 export default function Tab() {
     const [store, setStore] = useState<StoreType | null>(null);
-    const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
-    const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierType[]>([]);
+    const [suppliers, setSuppliers] = useState<SupplierTypeID[]>([]);
+    const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierTypeID[]>([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -124,7 +124,6 @@ export default function Tab() {
                 <Button
                     title="Go Back"
                     onPress={handleGoBack}
-                    style={styles.goBackButton}
                 />
             </SafeAreaView>
         </SafeAreaProvider>

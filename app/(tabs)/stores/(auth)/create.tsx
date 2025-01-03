@@ -4,17 +4,26 @@ import { useRouter } from "expo-router";
 import { Text, TextInput, StyleSheet, Button, View, CheckBox } from "react-native";
 import useAPI from '@/hooks/useAPI';
 import axios from "axios";
+import { SupplierTypeID } from "@/types";
+
+// Define the FormState type to ensure proper typing
+interface FormState {
+    name: string;
+    address: string;
+    supplier_id: string[]; // Explicitly typing supplier_id as string[]
+}
 
 export default function Page() {
-    const [suppliers, setSuppliers] = useState([]);
+    const [suppliers, setSuppliers] = useState<SupplierTypeID[]>([]);
 
     const router = useRouter();
     const { session } = useSession();
 
-    const [form, setForm] = useState({
+    // Explicitly type the form state with FormState interface
+    const [form, setForm] = useState<FormState>({
         name: "",
         address: "",
-        supplier_id: [],
+        supplier_id: [], // Initialize supplier_id as an empty array of strings
     });
 
     const { postRequest, data, loading, error } = useAPI();
@@ -51,7 +60,7 @@ export default function Page() {
         });
     };
 
-    if (loading === true) return <Text>Loading API...</Text>
+    if (loading === true) return <Text>Loading API...</Text>;
 
     return (
         <View>
@@ -93,7 +102,7 @@ export default function Page() {
                 color="#841584"
             />
         </View>
-    )
+    );
 };
 
 const styles = StyleSheet.create({
