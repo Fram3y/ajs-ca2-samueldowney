@@ -2,23 +2,21 @@ import { useEffect, useState } from "react";
 import { Text, TextInput, StyleSheet, Button, View, CheckBox } from 'react-native';
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { SupplierType } from "@/types";
-import useAPI from '@/hooks/useAPI';
+import { SupplierTypeID, ProductTypeID } from "@/types";
 import axios from "axios";
-import { isLoading } from "expo-font";
 
 export default function Page() {
-    const [supplier, setSupplier] = useState<SupplierType | null>(null);
-    const [products, setProducts] = useState([]);
+    const [supplier, setSupplier] = useState<SupplierTypeID | null>(null);
+    const [products, setProducts] = useState<ProductTypeID[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const { session } = useSession();
     const { id } = useLocalSearchParams();
     const router = useRouter();
 
-    const [form, setForm] = useState({
-        name: "",
-        product_id: []
+    const [form, setForm] = useState<{ name: string; product_id: string[] }>({
+        name: '',
+        product_id: [],
     });
 
     useEffect(() => {
@@ -68,6 +66,10 @@ export default function Page() {
             .catch(err => console.error(err))
     };
 
+    const handleGoBack = () => {
+        router.push('/suppliers');
+    };
+
     if (isLoading === true) return <Text>Loading API...</Text>;
 
     return (
@@ -96,6 +98,11 @@ export default function Page() {
                 onPress={handleSubmit}
                 title="Submit"
                 color="#841584"
+            />
+
+            <Button
+                title="Go Back"
+                onPress={handleGoBack}
             />
         </View>
     )

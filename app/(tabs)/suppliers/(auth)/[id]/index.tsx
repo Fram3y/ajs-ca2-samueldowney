@@ -3,14 +3,14 @@ import { useState, useEffect } from "react";
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { SupplierType, ProductType } from "@/types";
+import { SupplierTypeID, ProductTypeID } from "@/types";
 import axios from "axios";
 import { Text, StyleSheet, Button } from "react-native";
 
 export default function Tab() {
-    const [supplier, setSupplier] = useState<SupplierType | null>(null);
-    const [products, setProducts] = useState<ProductType[]>([]);
-    const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
+    const [supplier, setSupplier] = useState<SupplierTypeID | null>(null);
+    const [products, setProducts] = useState<ProductTypeID[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<ProductTypeID[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
 
@@ -116,7 +116,6 @@ export default function Tab() {
                 <Button
                     title="Go Back"
                     onPress={handleGoBack}
-                    style={styles.goBackButton}
                 />
             </SafeAreaView>
         </SafeAreaProvider>

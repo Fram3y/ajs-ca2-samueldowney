@@ -5,13 +5,6 @@ export interface StoreType {
     isDeleted?: boolean;
 }
 
-export interface SupplierType {
-    name: string;
-    product_id: array;
-    store_id: array;
-    isDeleted?: boolean;
-}
-
 export interface RoleType {
     title: string;
     description: string;
@@ -40,8 +33,14 @@ export interface StoreTypeID extends StoreType {
     _id: string;
 }
 
-export interface SupplierTypeID extends SupplierType {
-    _id: string;
+export interface SupplierTypeID {
+    data: {
+        _id: string;
+        name: string;
+        product_id: string[];
+        store_id: string[];
+        isDeleted?: boolean;
+    }
 }
 
 export interface RoleTypeID extends RoleType {
@@ -57,7 +56,7 @@ export interface EmployeeTypeID extends EmployeeType {
 }
 
 export interface IAuthContext {
-    signIn: (token:string) => void;
+    signIn: (token: string) => void;
     signOut: () => void;
     session?: string | null;
     isLoading: boolean;
