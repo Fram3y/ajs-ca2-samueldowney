@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'expo-router';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { SupplierTypeID } from '@/types';
+import { SupplierTypeID, StoreTypeID, ProductTypeID } from '@/types';
 import SupplierItem from '@/components/SupplierItem';
 import { useSession } from '@/contexts/AuthContext';
 
 export default function Tab() {
     const [suppliers, setSuppliers] = useState<SupplierTypeID[]>([]);
-    const [stores, setStores] = useState<any[]>([]);
-    const [products, setProducts] = useState<any[]>([]);
+    const [stores, setStores] = useState<StoreTypeID[]>([]);
+    const [products, setProducts] = useState<ProductTypeID[]>([]);
 
     const { session } = useSession();
 
@@ -19,7 +19,7 @@ export default function Tab() {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`, {
             headers: { Authorization: `Bearer ${session}` }
         })
-            .then(res => setSuppliers(res.data)) // Ensure data has _id
+            .then(res => setSuppliers(res.data)) 
             .catch(err => console.error(err));
 
         // Fetch Stores
@@ -50,11 +50,11 @@ export default function Tab() {
                     data={suppliers}
                     renderItem={({ item }) => {
                         const storeList = stores.filter(store =>
-                            store.supplier_id.includes(item._id) // Ensure supplier_id exists in store
+                            store.supplier_id.includes(item._id) 
                         );
 
                         const productList = products.filter(product =>
-                            item.product_id.includes(product._id) // Ensure product_id exists
+                            item.product_id.includes(product._id) 
                         );
 
                         return (

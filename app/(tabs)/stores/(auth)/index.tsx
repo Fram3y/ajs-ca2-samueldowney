@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import { StoreTypeID } from '@/types';
+import { StoreTypeID, SupplierTypeID } from '@/types';
 import StoreItem from '@/components/StoreItem';
 
 export default function Tab() {
-    const [stores, setStores] = useState([]);
-    const [suppliers, setSuppliers] = useState([]);
+    const [stores, setStores] = useState<StoreTypeID[]>([]);
+    const [suppliers, setSuppliers] = useState<SupplierTypeID[]>([]);
 
     useEffect(() => {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`)
             .then(res => setStores(res.data))
-            .catch(err => console.log('Error fetching stores:', err));
+            .catch(err => console.error('Error fetching stores:', err));
 
         axios.get('https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers')
             .then(res => setSuppliers(res.data))

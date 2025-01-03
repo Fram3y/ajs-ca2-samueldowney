@@ -3,7 +3,7 @@ import { Link } from 'expo-router';
 import { SupplierTypeID, StoreTypeID, ProductTypeID } from '@/types';
 
 interface MyProps {
-    supplier: SupplierTypeID; // Use SupplierTypeID instead of SupplierType
+    supplier: SupplierTypeID;
     stores: StoreTypeID[];
     products: ProductTypeID[];
 }
