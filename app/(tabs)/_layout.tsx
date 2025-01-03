@@ -1,6 +1,11 @@
 import { Tabs, Link, useSegments } from 'expo-router';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { TabNavigationState, ParamListBase, Route } from '@react-navigation/native';
+
+type CustomTabBarProps = {
+  state: TabNavigationState<ParamListBase>;
+};
 
 export default function TabLayout() {
   return (
@@ -32,100 +37,84 @@ export default function TabLayout() {
   );
 }
 
-function CustomTabBar({ state, descriptors, navigation }) {
-  const segments = useSegments();
-  
-  // Helper function to determine active state
-  const isActive = (routeName) => {
-    const currentRoute = state.routes[state.index].name;
-    return currentRoute === routeName || segments.includes(routeName);
+function CustomTabBar({ state }: CustomTabBarProps) {
+  const segments = useSegments() as string[]; // Explicitly type as string[]
+
+  const isActive = (routeName: string): boolean => {
+    const currentRoute: string | undefined = state.routes[state.index]?.name;
+    return currentRoute === routeName || segments.includes(routeName); // Now works as expected
   };
 
   return (
     <View style={styles.tabBar} key={state.index}>
+
       {/* Home Tab */}
       <Link href="/" asChild>
         <TouchableOpacity style={styles.tabItem}>
           <FontAwesome
             name="home"
             size={28}
-            color={isActive("index") ? "blue" : "gray"}
+            color={isActive("index") ? "indigo" : "gray"}
           />
-          <Text style={{ color: isActive("index") ? "blue" : "gray" }}>
-            Home
-          </Text>
         </TouchableOpacity>
       </Link>
 
-      {/* Store Tab */}
-      <Link href="/(tabs)/stores" asChild>
+
+      {/* Stores Page */}
+      <Link href="/(tabs)/stores/(auth)" asChild>
         <TouchableOpacity style={styles.tabItem}>
-          <FontAwesome
+        <FontAwesome
             name="shopping-cart"
             size={28}
-            color={isActive("stores") ? "blue" : "gray"}
+            color={isActive("stores") ? "indigo" : "gray"}
           />
-          <Text style={{ color: isActive("stores") ? "blue" : "gray" }}>
-            Stores
-          </Text>
         </TouchableOpacity>
       </Link>
 
-      {/* Supplier Tab */}
-      <Link href="/(tabs)/suppliers" asChild>
+      {/* Suppliers Page */}
+      <Link href="/(tabs)/suppliers/(auth)" asChild>
         <TouchableOpacity style={styles.tabItem}>
-          <FontAwesome
+        <FontAwesome
             name="truck"
             size={28}
-            color={isActive("suppliers") ? "blue" : "gray"}
+            color={isActive("suppliers") ? "indigo" : "gray"}
           />
-          <Text style={{ color: isActive("suppliers") ? "blue" : "gray" }}>
-            Suppliers
-          </Text>
         </TouchableOpacity>
       </Link>
 
       {/* Products Tab */}
-      <Link href="/(tabs)/products" asChild>
+      <Link href="/(tabs)/products/(auth)" asChild>
         <TouchableOpacity style={styles.tabItem}>
-          <FontAwesome
+        <FontAwesome
             name="tags"
             size={28}
-            color={isActive("products") ? "blue" : "gray"}
+            color={isActive("products") ? "indigo" : "gray"}
           />
-          <Text style={{ color: isActive("products") ? "blue" : "gray" }}>
-            Products
-          </Text>
         </TouchableOpacity>
       </Link>
 
       {/* Roles Tab */}
-      <Link href="/(tabs)/roles" asChild>
+      <Link href="/(tabs)/roles/(auth)" asChild>
         <TouchableOpacity style={styles.tabItem}>
-          <FontAwesome
+        <FontAwesome
             name="users"
             size={28}
-            color={isActive("roles") ? "blue" : "gray"}
+            color={isActive("roles") ? "indigo" : "gray"}
           />
-          <Text style={{ color: isActive("roles") ? "blue" : "gray" }}>
-            Roles
-          </Text>
         </TouchableOpacity>
       </Link>
 
       {/* Employees Tab */}
-      <Link href="/(tabs)/employees" asChild>
+      <Link href="/(tabs)/employees/(auth)" asChild>
         <TouchableOpacity style={styles.tabItem}>
-          <FontAwesome 
-          name="id-badge" 
-          size={28} 
-          color={isActive("employees") ? "blue" : "gray"} 
+        <FontAwesome
+            name="id-badge"
+            size={28}
+            color={isActive("employees") ? "indigo" : "gray"}
           />
-          <Text style={{ color: isActive("employees") ? "blue" : "gray" }}>
-            Employees
-          </Text>
         </TouchableOpacity>
       </Link>
+
     </View>
   );
 };
@@ -141,5 +130,18 @@ const styles = StyleSheet.create({
   },
   tabItem: {
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#f2f0fc',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // For Android shadow
+  },
+  activeTabItem: {
+    backgroundColor: '#e0dbff', // Slightly darker shade for active tabs
   },
 });
