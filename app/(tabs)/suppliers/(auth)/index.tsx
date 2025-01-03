@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'expo-router';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { SupplierType, SupplierTypeID } from '@/types';
+import { SupplierTypeID } from '@/types';
 import SupplierItem from '@/components/SupplierItem';
 import { useSession } from '@/contexts/AuthContext';
 
 export default function Tab() {
-    const [suppliers, setSuppliers] = useState<SupplierType[]>([]);
-    const [stores, setStores] = useState([]);
-    const [products, setProducts] = useState([]);
+    const [suppliers, setSuppliers] = useState<SupplierTypeID[]>([]);
+    const [stores, setStores] = useState<any[]>([]);
+    const [products, setProducts] = useState<any[]>([]);
 
     const { session } = useSession();
 
@@ -19,7 +19,7 @@ export default function Tab() {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`, {
             headers: { Authorization: `Bearer ${session}` }
         })
-            .then(res => setSuppliers(res.data))
+            .then(res => setSuppliers(res.data)) // Ensure data has _id
             .catch(err => console.error(err));
 
         // Fetch Stores
@@ -35,26 +35,26 @@ export default function Tab() {
         })
             .then(res => setProducts(res.data))
             .catch(err => console.error(err));
-    }, []);
+    }, [session]);
 
-    if (suppliers.length === 0) return <Text>No suppliers found</Text>
+    if (suppliers.length === 0) return <Text>No suppliers found</Text>;
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
                 <Link href="/suppliers/create">
-                    <Button title="Create New Store" color="blue" />
+                    <Button title="Create New Supplier" color="blue" />
                 </Link>
 
                 <FlatList
                     data={suppliers}
                     renderItem={({ item }) => {
                         const storeList = stores.filter(store =>
-                            store.supplier_id.includes(item._id)
+                            store.supplier_id.includes(item._id) // Ensure supplier_id exists in store
                         );
 
                         const productList = products.filter(product =>
-                            item.product_id.includes(product._id)
+                            item.product_id.includes(product._id) // Ensure product_id exists
                         );
 
                         return (
@@ -65,7 +65,7 @@ export default function Tab() {
                             />
                         );
                     }}
-                    keyExtractor={(supplier: SupplierTypeID) => supplier._id}
+                    keyExtractor={(supplier) => supplier._id} // This works as _id exists in SupplierTypeID
                 />
             </SafeAreaView>
         </SafeAreaProvider>

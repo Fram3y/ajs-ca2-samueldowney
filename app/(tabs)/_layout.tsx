@@ -54,7 +54,7 @@ function CustomTabBar({ state }: CustomTabBarProps) {
           <FontAwesome
             name="home"
             size={28}
-            color={isActive("index") ? "indigo" : "gray"}
+            color={isActive("index") ? "#65558F" : "gray"}
           />
         </TouchableOpacity>
       </Link>
@@ -66,7 +66,7 @@ function CustomTabBar({ state }: CustomTabBarProps) {
         <FontAwesome
             name="shopping-cart"
             size={28}
-            color={isActive("stores") ? "indigo" : "gray"}
+            color={isActive("stores") ? "#65558F" : "gray"}
           />
         </TouchableOpacity>
       </Link>
@@ -77,7 +77,7 @@ function CustomTabBar({ state }: CustomTabBarProps) {
         <FontAwesome
             name="truck"
             size={28}
-            color={isActive("suppliers") ? "indigo" : "gray"}
+            color={isActive("suppliers") ? "#65558F" : "gray"}
           />
         </TouchableOpacity>
       </Link>
@@ -88,7 +88,7 @@ function CustomTabBar({ state }: CustomTabBarProps) {
         <FontAwesome
             name="tags"
             size={28}
-            color={isActive("products") ? "indigo" : "gray"}
+            color={isActive("products") ? "#65558F" : "gray"}
           />
         </TouchableOpacity>
       </Link>
@@ -99,7 +99,7 @@ function CustomTabBar({ state }: CustomTabBarProps) {
         <FontAwesome
             name="users"
             size={28}
-            color={isActive("roles") ? "indigo" : "gray"}
+            color={isActive("roles") ? "#65558F" : "gray"}
           />
         </TouchableOpacity>
       </Link>
@@ -110,7 +110,7 @@ function CustomTabBar({ state }: CustomTabBarProps) {
         <FontAwesome
             name="id-badge"
             size={28}
-            color={isActive("employees") ? "indigo" : "gray"}
+            color={isActive("employees") ? "#65558F" : "gray"}
           />
         </TouchableOpacity>
       </Link>
