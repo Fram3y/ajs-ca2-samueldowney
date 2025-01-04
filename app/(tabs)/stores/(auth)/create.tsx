@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSession } from "@/contexts/AuthContext";
 import { useRouter } from "expo-router";
-import { Text, TextInput, StyleSheet, Button, View, CheckBox } from "react-native";
+import { Text, TextInput, StyleSheet, Button, View } from "react-native";
+import CheckBox from "react-native-check-box";
 import useAPI from '@/hooks/useAPI';
 import axios from "axios";
 import { SupplierTypeID } from "@/types";
@@ -87,15 +88,18 @@ export default function Page() {
             {suppliers.map((supplier) => (
                 <View key={supplier._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.supplier_id.includes(supplier._id)}
-                        onValueChange={() => handleCheckboxChange(supplier._id)}
+                        isChecked={form.supplier_id?.includes(supplier._id)}
+                        onClick={() => handleCheckboxChange(supplier._id)}
+                        rightText={supplier.name}
+                        rightTextStyle={styles.checkboxText}
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text>{supplier.name}</Text>
                 </View>
             ))}
 
             <Text>{error}</Text>
-            
+
             <Button
                 onPress={handleSubmit}
                 title="Submit"
@@ -116,5 +120,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 10,
-    }
+    },
+    checkboxText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#000',
+    },
 });

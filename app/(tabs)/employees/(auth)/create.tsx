@@ -2,7 +2,8 @@ import { useSession } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import axios from "axios";
-import { View, Text, TextInput, StyleSheet, CheckBox, Button } from "react-native";
+import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import CheckBox from "react-native-check-box";
 import { RoleTypeID, StoreTypeID } from "@/types";
 
 interface FormState {
@@ -83,7 +84,6 @@ export default function Page() {
 
     return (
         <View>
-            <Text>Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Name"
@@ -91,7 +91,6 @@ export default function Page() {
                 onChangeText={(value) => setForm({ ...form, name: value })}
             />
 
-            <Text>Email:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -99,7 +98,6 @@ export default function Page() {
                 onChangeText={(value) => setForm({ ...form, email: value })}
             />
 
-            <Text>Address:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Address"
@@ -119,7 +117,6 @@ export default function Page() {
                 }}
             />
 
-            <Text>Phone Number:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Phone Number"
@@ -131,10 +128,13 @@ export default function Page() {
             {stores.map((store) => (
                 <View key={store._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.store_id.includes(store._id)}
-                        onValueChange={() => handleCheckboxChange(store._id, 'store')}
+                        isChecked={form.store_id?.includes(store._id)}
+                        onClick={() => handleCheckboxChange(store._id, 'store')}
+                        rightText={store.name}
+                        rightTextStyle={styles.checkboxText}
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text>{store.name}</Text>
                 </View>
             ))}
 
@@ -142,10 +142,13 @@ export default function Page() {
             {roles.map((role) => (
                 <View key={role._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.role_id.includes(role._id)}
-                        onValueChange={() => handleCheckboxChange(role._id, 'role')}
+                        isChecked={form.role_id?.includes(role._id)}
+                        onClick={() => handleCheckboxChange(role._id, 'role')}
+                        rightText={role.title}
+                        rightTextStyle={styles.checkboxText}
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text>{role.title}</Text>
                 </View>
             ))}
 
@@ -166,5 +169,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 10,
+    },
+    checkboxText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#000',
     },
 });

@@ -2,7 +2,8 @@ import { useSession } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import axios from "axios";
-import { View, Text, TextInput, StyleSheet, CheckBox } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import CheckBox from "react-native-check-box";
 import { TouchableOpacity } from "react-native";
 
 interface FormState {
@@ -63,16 +64,18 @@ export default function Page() {
                 placeholder="Supplier Name"
             />
     
-            <Text style={styles.productsTitle}>Products</Text> {/* Updated text style */}
+            <Text style={styles.productsTitle}>Products</Text>
     
             {products.map((product) => (
                 <View key={product._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.product_id.includes(product._id)}
-                        onValueChange={() => handleCheckboxChange(product._id)}
-                        style={styles.checkbox}
+                        isChecked={form.product_id?.includes(product._id)}
+                        onClick={() => handleCheckboxChange(product._id)}
+                        rightText={product.name}
+                        rightTextStyle={styles.checkboxText}
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text style={styles.checkboxText}>{product.name}</Text>
                 </View>
             ))}
     
@@ -120,8 +123,9 @@ const styles = StyleSheet.create({
         transform: [{ scale: 1.5 }],
     },
     checkboxText: {
-        marginLeft: 16,
-        fontSize: 16, 
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#000',
     },
     buttonRow: {
         flexDirection: "row",

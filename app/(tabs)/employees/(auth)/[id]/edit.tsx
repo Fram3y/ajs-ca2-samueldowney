@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Text, TextInput, StyleSheet, Button, View, CheckBox } from 'react-native';
+import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
+import CheckBox from "react-native-check-box";
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { EmployeeType, RoleTypeID, StoreTypeID } from "@/types";
@@ -143,10 +144,13 @@ export default function Page() {
             {stores.map((store) => (
                 <View key={store._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.store_id.includes(store._id)}
-                        onValueChange={() => handleCheckboxChange(store._id, 'store')}
+                        isChecked={form.store_id?.includes(store._id)}
+                        onClick={() => handleCheckboxChange(store._id, 'store')}
+                        rightText={store.name}
+                        rightTextStyle={styles.checkboxText}
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text>{store.name}</Text>
                 </View>
             ))}
 
@@ -154,10 +158,13 @@ export default function Page() {
             {roles.map((role) => (
                 <View key={role._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.role_id.includes(role._id)}
-                        onValueChange={() => handleCheckboxChange(role._id, 'role')}
+                        isChecked={form.role_id?.includes(role._id)}
+                        onClick={() => handleCheckboxChange(role._id, 'role')}
+                        rightText={role.title}
+                        rightTextStyle={styles.checkboxText}
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text>{role.title}</Text>
                 </View>
             ))}
 
@@ -180,5 +187,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 10,
+    },
+    checkboxText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#000',
     },
 });

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Text, TextInput, StyleSheet, Button, View, CheckBox } from 'react-native';
+import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
+import CheckBox from 'react-native-check-box';
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { SupplierTypeID, ProductTypeID } from "@/types";
@@ -87,10 +88,13 @@ export default function Page() {
             {products.map((product) => (
                 <View key={product._id} style={styles.checkboxContainer}>
                     <CheckBox
-                        value={form.product_id?.includes(product._id)} // Use optional chaining to prevent undefined errors
-                        onValueChange={() => handleCheckboxChange(product._id)}
+                        isChecked={form.product_id?.includes(product._id)} 
+                        onClick={() => handleCheckboxChange(product._id)} 
+                        rightText={product.name}
+                        rightTextStyle={styles.checkboxText} 
+                        checkedCheckBoxColor="#007BFF"
+                        uncheckedCheckBoxColor="#CCC"
                     />
-                    <Text>{product.name}</Text>
                 </View>
             ))}
 
@@ -119,5 +123,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 10,
+    },
+    checkboxText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#000',
     },
 });
