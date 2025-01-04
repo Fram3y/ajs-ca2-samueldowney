@@ -1,4 +1,4 @@
-import { Text, StyleSheet, FlatList, Button } from 'react-native';
+import { Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,25 +12,28 @@ export default function Tab() {
     const { session } = useSession();
 
     useEffect(() => {
+        // Fetch Products
         axios
-            .get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products`, {
-                headers: {
-                    Authorization: `Bearer ${session}`
-                }
-            })
+            .get(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/products`)
             .then(res => setProducts(res.data))
             .catch(err => console.log('Error fetching products:', err));
-    }, []);
+    }, [products]);
 
     if (products.length === 0) return <Text>No Products Found</Text>;
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
+                {/* Create New Button */}
                 <Link href="/products/create">
-                    <Button title="Create New Product" color="blue" />
+                    <TouchableOpacity
+                        style={[styles.button, styles.submitButton]}
+                    >
+                        <Text style={styles.submitButtonText}>Create New</Text>
+                    </TouchableOpacity>
                 </Link>
 
+                {/* Product Card Loop */}
                 <FlatList
                     data={products}
                     renderItem={({ item }) => <ProductItem product={item} />}
@@ -46,5 +49,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
     },
 });

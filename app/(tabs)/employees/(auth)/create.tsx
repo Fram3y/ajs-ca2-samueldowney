@@ -2,7 +2,7 @@ import { useSession } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import axios from "axios";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import CheckBox from "react-native-check-box";
 import { RoleTypeID, StoreTypeID } from "@/types";
 
@@ -30,29 +30,14 @@ export default function Page() {
     });
 
     useEffect(() => {
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
-        })
-            .then(res => { setStores(res.data); })
-            .catch(err => { console.error(err); });
-
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/roles`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
-        })
-            .then(res => setRoles(res.data))
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`)
+            .then(res => setStores(res.data))
             .catch(err => console.error(err));
-    }, [session]);
 
-    const handleChange = (e: any) => {
-        setForm(prevState => ({
-            ...prevState,
-            [e.target.id]: e.target.value
-        }));
-    };
+        axios.get(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/roles`)
+            .then(res => setRoles(res.data))
+            .catch(err => console.error('Error fetching roles', err));
+    }, []);
 
     const handleCheckboxChange = (id: string, type: 'store' | 'role') => {
         setForm(prevState => {
@@ -73,17 +58,19 @@ export default function Page() {
     };
 
     const handleSubmit = () => {
-        axios.post(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/employees`, form, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
+        axios.post(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/employees`, form, {
+            headers: { Authorization: `Bearer ${session}` }
         })
-            .then(res => { router.push(`/employees`); })
-            .catch(err => { console.error(`Error registering employee`, err) })
+            .then(() => { router.push(`/employees`); })
+            .catch(err => { console.error(`Error Registering Employee`, err) })
+    };
+
+    const handleGoBack = () => {
+        router.push(`/employees`);
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Name"
@@ -109,6 +96,7 @@ export default function Page() {
 
             {/* Web-only date picker */}
             <input
+                style={styles.input}
                 type="date"
                 value={form.dob ? form.dob.toISOString().slice(0, 10) : ""}
                 onChange={(e) => {
@@ -124,7 +112,7 @@ export default function Page() {
                 onChangeText={(value) => setForm({ ...form, phone_number: value })}
             />
 
-            <Text>Store:</Text>
+            <Text style={styles.productsTitle}>Store:</Text>
             {stores.map((store) => (
                 <View key={store._id} style={styles.checkboxContainer}>
                     <CheckBox
@@ -138,7 +126,7 @@ export default function Page() {
                 </View>
             ))}
 
-            <Text>Role:</Text>
+            <Text style={styles.productsTitle}>Role:</Text>
             {roles.map((role) => (
                 <View key={role._id} style={styles.checkboxContainer}>
                     <CheckBox
@@ -152,18 +140,38 @@ export default function Page() {
                 </View>
             ))}
 
-            <Button title="Submit" onPress={handleSubmit} />
+            <View style={styles.buttonRow}>
+                {/* Submit Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.submitButton]}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+
+                {/* Go Back Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.goBackButton]}
+                    onPress={handleGoBack}
+                >
+                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        flex: 1,
+    },
     input: {
         height: 40,
-        margin: 10,
+        borderColor: "#ccc",
         borderWidth: 1,
-        padding: 10,
-        justifyContent: "center",
+        marginBottom: 16,
+        paddingLeft: 8,
     },
     checkboxContainer: {
         flexDirection: "row",
@@ -174,5 +182,39 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 16,
         color: '#000',
+    },
+    productsTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
     },
 });

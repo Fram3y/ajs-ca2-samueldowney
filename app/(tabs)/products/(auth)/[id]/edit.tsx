@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
+import { Text, TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ProductType } from "@/types";
@@ -11,15 +11,13 @@ export default function Page() {
     const { session } = useSession();
     const { id } = useLocalSearchParams();
 
-    const [form, setForm] = useState({ 
-        name: "", 
-        description: "", 
-        price: "" 
+    const [form, setForm] = useState({
+        name: "",
+        description: "",
+        price: ""
     });
 
     useEffect(() => {
-        if (!id || !session) return;
-
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products/${id}`, {
             headers: { Authorization: `Bearer ${session}` }
         })
@@ -45,9 +43,12 @@ export default function Page() {
             .catch(err => console.error(err));
     };
 
+    const handleGoBack = () => {
+        router.push('/products');
+    };
+
     return (
-        <View>
-            <Text>Name</Text>
+        <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Name"
@@ -69,20 +70,66 @@ export default function Page() {
                 onChangeText={(value) => handleChange('price', value)}
             />
 
-            <Button
-                onPress={handleSubmit}
-                title="Submit"
-                color="#841584"
-            />
+            <View style={styles.buttonRow}>
+                {/* Submit Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.submitButton]}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+
+                {/* Go Back Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.goBackButton]}
+                    onPress={handleGoBack}
+                >
+                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        flex: 1,
+    },
     input: {
         height: 40,
-        margin: 10,
+        borderColor: "#ccc",
         borderWidth: 1,
-        padding: 10,
-    }
+        marginBottom: 16,
+        paddingLeft: 8,
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
 });

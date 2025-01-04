@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { useSession } from "@/contexts/AuthContext";
 import { useRouter } from "expo-router";
-import { Text, TextInput, StyleSheet, Button, View } from "react-native";
+import { Text, TextInput, StyleSheet, View, TouchableOpacity } from "react-native";
 import CheckBox from "react-native-check-box";
 import useAPI from '@/hooks/useAPI';
 import axios from "axios";
 import { SupplierTypeID } from "@/types";
 
-// Define the FormState type to ensure proper typing
 interface FormState {
     name: string;
     address: string;
-    supplier_id: string[]; // Explicitly typing supplier_id as string[]
+    supplier_id: string[]; 
 }
 
 export default function Page() {
@@ -20,14 +19,13 @@ export default function Page() {
     const router = useRouter();
     const { session } = useSession();
 
-    // Explicitly type the form state with FormState interface
     const [form, setForm] = useState<FormState>({
         name: "",
         address: "",
-        supplier_id: [], // Initialize supplier_id as an empty array of strings
+        supplier_id: [],
     });
 
-    const { postRequest, data, loading, error } = useAPI();
+    const { loading, error } = useAPI();
 
     useEffect(() => {
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`)
@@ -52,20 +50,21 @@ export default function Page() {
     };
 
     const handleSubmit = () => {
-        postRequest(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, form, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
-        }, (data) => {
-            router.push(`/stores`);
-        });
+        axios.post(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, form, {
+            headers: { Authorization: `Bearer ${session}` }
+        })
+            .then(res => router.push(`/stores`))
+            .catch(err => console.error(`Error Updating Store:`, err))
+    };
+
+    const handleGoBack = () => {
+        router.push('/stores');
     };
 
     if (loading === true) return <Text>Loading API...</Text>;
 
     return (
-        <View>
-            <Text>Name</Text>
+        <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder='Name'
@@ -74,7 +73,6 @@ export default function Page() {
                 id='name'
             />
 
-            <Text>Address</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Address'
@@ -83,8 +81,7 @@ export default function Page() {
                 id='address'
             />
 
-            <Text>Suppliers</Text>
-            {/* Multiple selection using checkboxes */}
+            <Text style={styles.suppliersTitle}>Suppliers</Text>
             {suppliers.map((supplier) => (
                 <View key={supplier._id} style={styles.checkboxContainer}>
                     <CheckBox
@@ -100,21 +97,72 @@ export default function Page() {
 
             <Text>{error}</Text>
 
-            <Button
-                onPress={handleSubmit}
-                title="Submit"
-                color="#841584"
-            />
+            <View style={styles.buttonRow}>
+                {/* Submit Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.submitButton]}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+
+                {/* Go Back Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.goBackButton]}
+                    onPress={handleGoBack}
+                >
+                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        flex: 1,
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
     input: {
         height: 40,
-        margin: 10,
+        borderColor: "#ccc",
         borderWidth: 1,
-        padding: 10
+        marginBottom: 16,
+        paddingLeft: 8,
+    },
+    suppliersTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
     },
     checkboxContainer: {
         flexDirection: "row",

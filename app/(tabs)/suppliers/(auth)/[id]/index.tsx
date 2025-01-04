@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { SupplierTypeID, ProductTypeID } from "@/types";
 import axios from "axios";
-import { Text, StyleSheet, Button } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function Tab() {
     const [supplier, setSupplier] = useState<SupplierTypeID | null>(null);
@@ -102,21 +102,34 @@ export default function Tab() {
                     <Text style={styles.noProducts}>No products available</Text>
                 )}
 
-                <Link href={`/suppliers/${supplier.data._id}/edit`}>
-                    <Button title="Edit Supplier" color="blue" />
-                </Link>
+                {/* Buttons */}
+                <View style={styles.buttonRow}>
+                    {/* Delete Button */}
+                    <TouchableOpacity
+                        style={[styles.button, styles.deleteButton]}
+                        onPress={handleDelete}
+                    >
+                        <Text style={styles.deleteButtonText}>Delete</Text>
+                    </TouchableOpacity>
 
-                <Button
-                    title="Delete"
-                    color="red"
-                    onPress={handleDelete}
-                    disabled={isUpdating}
-                />
+                    {/* Edit Button */}
+                    <Link href={`/suppliers/${supplier.data._id}/edit`}>
+                    <TouchableOpacity
+                        style={[styles.button, styles.goBackButton]}
+                    >
+                        <Text style={styles.goBackButtonText}>Edit</Text>
+                    </TouchableOpacity>
+                    </Link>
 
-                <Button
-                    title="Go Back"
-                    onPress={handleGoBack}
-                />
+                    {/* Go Back Button */}
+                    <TouchableOpacity
+                        style={[styles.button, styles.goBackButton]}
+                        onPress={handleGoBack}
+                    >
+                        <Text style={styles.goBackButtonText}>Go Back</Text>
+                    </TouchableOpacity>
+                </View>
+
             </SafeAreaView>
         </SafeAreaProvider>
     );
@@ -128,6 +141,35 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    deleteButton: {
+        backgroundColor: "#65558F",
+    },
+    deleteButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
     },
     loadingText: {
         fontSize: 18,
@@ -144,7 +186,6 @@ const styles = StyleSheet.create({
     suppliersTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 10,
         color: '#333',
     },
     product: {

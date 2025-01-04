@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
+import { Text, TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
 import CheckBox from "react-native-check-box";
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -40,21 +40,21 @@ export default function Page() {
 
     useEffect(() => {
         // Fetching Employee Data
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/employees/${id}`, {
+        axios.get(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/employees/${id}`, {
             headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => setEmployee(res.data))
             .catch(err => console.log(`Error Fetching Employee`, err));
 
         // Fetching Store Data
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, {
+        axios.get(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/stores`, {
             headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => setStores(res.data))
             .catch(err => console.error(`Error Fetching Stores`, err));
 
         // Fetching Role Data
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/roles`, {
+        axios.get(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/roles`, {
             headers: { Authorization: `Bearer ${session}` }
         })
             .then(res => setRoles(res.data))
@@ -87,16 +87,19 @@ export default function Page() {
     };
 
     const handleSubmit = () => {
-        putRequest(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/employees/${id}`, form, {
+        putRequest(`https://ajs-ca1-samdowney-4i60yrw3j-samuels-projects-61c25dee.vercel.app/api/employees/${id}`, form, {
             headers: { Authorization: `Bearer ${session}` }
         }, (data) => {
             router.push(`/employees/${data._id}`);
         });
     };
 
+    const handleGoBack = () => {
+        router.push('/employees');
+    };
+
     return (
-        <View>
-            <Text>Name:</Text>
+        <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Name"
@@ -104,7 +107,6 @@ export default function Page() {
                 onChangeText={(value) => setForm({ ...form, name: value })}
             />
 
-            <Text>Email:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -112,7 +114,6 @@ export default function Page() {
                 onChangeText={(value) => setForm({ ...form, email: value })}
             />
 
-            <Text>Address:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Address"
@@ -124,6 +125,7 @@ export default function Page() {
 
             {/* Web-only date picker */}
             <input
+                style={styles.input}
                 type="date"
                 value={form.dob ? form.dob.toISOString().slice(0, 10) : ""}
                 onChange={(e) => {
@@ -132,7 +134,6 @@ export default function Page() {
                 }}
             />
 
-            <Text>Phone Number:</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Phone Number"
@@ -170,18 +171,38 @@ export default function Page() {
 
             {error && <Text>{error}</Text>}
 
-            <Button title="Submit" onPress={handleSubmit} />
+            <View style={styles.buttonRow}>
+                {/* Submit Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.submitButton]}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+
+                {/* Go Back Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.goBackButton]}
+                    onPress={handleGoBack}
+                >
+                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 };
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        flex: 1,
+    },
     input: {
         height: 40,
-        margin: 10,
+        borderColor: "#ccc",
         borderWidth: 1,
-        padding: 10,
-        justifyContent: "center",
+        marginBottom: 16,
+        paddingLeft: 8,
     },
     checkboxContainer: {
         flexDirection: "row",
@@ -192,5 +213,34 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 16,
         color: '#000',
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
     },
 });

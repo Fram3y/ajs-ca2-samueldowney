@@ -1,4 +1,4 @@
-import { Text, StyleSheet, Button } from 'react-native';
+import { Text, StyleSheet, Button, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { useSession } from '@/contexts/AuthContext';
@@ -24,23 +24,17 @@ export default function Tab() {
 
         // Fetch Store Data
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores/${id}`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
+            headers: { Authorization: `Bearer ${session}` }
         })
-        .then(res => setStore(res.data))
-        .catch(err => console.error('Error fetching store:', err));
+            .then(res => setStore(res.data))
+            .catch(err => console.error('Error fetching store:', err));
 
         // Fetch Suppliers Data
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
-        })
-        .then(res => setSuppliers(res.data))
-        .catch(err => console.error('Error fetching suppliers:', err))
-        .finally(() => setIsLoading(false));
-    }, [id, session]);
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`)
+            .then(res => setSuppliers(res.data))
+            .catch(err => console.error('Error fetching suppliers:', err))
+            .finally(() => setIsLoading(false));
+    }, [id]);
 
     // Filter Suppliers based on store's supplier_id
     useEffect(() => {
@@ -107,24 +101,32 @@ export default function Tab() {
                     <Text style={styles.noSuppliers}>No suppliers available</Text>
                 )}
 
-                {/* Buttons */}
-                <Link href={`/stores/${store.data._id}/edit`}>
-                    <Button title="Edit Store" color="blue" />
-                </Link>
+                <View style={styles.buttonRow}>
+                    {/* Delete Button */}
+                    <TouchableOpacity
+                        style={[styles.button, styles.deleteButton]}
+                        onPress={handleDelete}
+                    >
+                        <Text style={styles.deleteButtonText}>Delete</Text>
+                    </TouchableOpacity>
 
-                {/* Delete Button */}
-                <Button
-                    title="Delete"
-                    color="red"
-                    onPress={handleDelete}
-                    disabled={isUpdating}
-                />
+                    {/* Edit Button */}
+                    <Link href={`/stores/${store.data._id}/edit`}>
+                        <TouchableOpacity
+                            style={[styles.button, styles.goBackButton]}
+                        >
+                            <Text style={styles.goBackButtonText}>Edit</Text>
+                        </TouchableOpacity>
+                    </Link>
 
-                {/* Go Back Button */}
-                <Button
-                    title="Go Back"
-                    onPress={handleGoBack}
-                />
+                    {/* Go Back Button */}
+                    <TouchableOpacity
+                        style={[styles.button, styles.goBackButton]}
+                        onPress={handleGoBack}
+                    >
+                        <Text style={styles.goBackButtonText}>Go Back</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
         </SafeAreaProvider>
     );
@@ -170,9 +172,33 @@ const styles = StyleSheet.create({
         color: '#999',
         marginVertical: 5,
     },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
     goBackButton: {
-        marginTop: 20,
-        backgroundColor: '#4CAF50',
-        width: '80%', 
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    deleteButton: {
+        backgroundColor: "#65558F",
+    },
+    deleteButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
     },
 });

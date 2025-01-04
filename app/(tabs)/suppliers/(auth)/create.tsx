@@ -26,8 +26,8 @@ export default function Page() {
             .get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products`, {
                 headers: { Authorization: `Bearer ${session}` },
             })
-            .then((res) => setProducts(res.data))
-            .catch((err) => console.error(err));
+            .then(res => setProducts(res.data))
+            .catch(err => console.error(err));
     }, []);
 
     const handleCheckboxChange = (id: string) => {
@@ -45,7 +45,7 @@ export default function Page() {
                 headers: { Authorization: `Bearer ${session}` },
             })
             .then(() => router.push(`/suppliers`))
-            .catch((err) => console.error(`Error registering supplier`, err));
+            .catch(err => console.error(`Error Registering Supplier`, err));
     };
 
     const handleGoBack = () => {
@@ -63,9 +63,9 @@ export default function Page() {
                 style={styles.input}
                 placeholder="Supplier Name"
             />
-    
+
             <Text style={styles.productsTitle}>Products</Text>
-    
+
             {products.map((product) => (
                 <View key={product._id} style={styles.checkboxContainer}>
                     <CheckBox
@@ -78,14 +78,19 @@ export default function Page() {
                     />
                 </View>
             ))}
-    
+
+            {/* Button Row */}
             <View style={styles.buttonRow}>
+
+                {/* Submit Button */}
                 <TouchableOpacity
                     style={[styles.button, styles.submitButton]}
                     onPress={handleSubmit}
                 >
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </TouchableOpacity>
+
+                {/* Go Back Button */}
                 <TouchableOpacity
                     style={[styles.button, styles.goBackButton]}
                     onPress={handleGoBack}
@@ -110,9 +115,9 @@ const styles = StyleSheet.create({
         paddingLeft: 8,
     },
     productsTitle: {
-        fontSize: 20, // Increased font size for "Products"
-        fontWeight: "bold", // Bold text
-        marginBottom: 16, // Add space below the title
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
     },
     checkboxContainer: {
         flexDirection: "row",

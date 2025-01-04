@@ -1,4 +1,4 @@
-import { Text, StyleSheet, FlatList, Button } from 'react-native';
+import { Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -29,19 +29,26 @@ export default function Tab() {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
+
+                {/* Create New Button */}
                 <Link href="/stores/create">
-                    <Button title="Create New Store" color="blue" />
+                    <TouchableOpacity
+                        style={[styles.button, styles.submitButton]}
+                    >
+                        <Text style={styles.submitButtonText}>Create New</Text>
+                    </TouchableOpacity>
                 </Link>
 
+                {/* Card Loop */}
                 <FlatList
                     data={stores}
                     renderItem={({ item }) => {
-                        // Get suppliers for this store
                         const storeSuppliers = getSuppliersForStore(item.supplier_id); // Use supplier_id array from store
                         return <StoreItem store={item} suppliers={storeSuppliers} />;
                     }}
                     keyExtractor={(store: StoreTypeID) => store._id}
                 />
+
             </SafeAreaView>
         </SafeAreaProvider>
     );
@@ -52,5 +59,18 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
     },
 });

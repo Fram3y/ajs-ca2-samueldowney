@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
+import { Text, TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
 import CheckBox from 'react-native-check-box';
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -74,8 +74,7 @@ export default function Page() {
     if (isLoading === true) return <Text>Loading API...</Text>;
 
     return (
-        <View>
-            <Text>Name</Text>
+        <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Name"
@@ -84,7 +83,7 @@ export default function Page() {
                 id="name"
             />
 
-            <Text>Product</Text>
+            <Text style={styles.productsTitle}>Product</Text>
             {products.map((product) => (
                 <View key={product._id} style={styles.checkboxContainer}>
                     <CheckBox
@@ -98,26 +97,45 @@ export default function Page() {
                 </View>
             ))}
 
-            <Button
-                onPress={handleSubmit}
-                title="Submit"
-                color="#841584"
-            />
+            {/* Button Row */}
+            <View style={styles.buttonRow}>
 
-            <Button
-                title="Go Back"
-                onPress={handleGoBack}
-            />
+                {/* Submit Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.submitButton]}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+
+                {/* Go Back Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.goBackButton]}
+                    onPress={handleGoBack}
+                >
+                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 };
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 16,
+        flex: 1,
+    },
     input: {
         height: 40,
-        margin: 10,
+        borderColor: "#ccc",
         borderWidth: 1,
-        padding: 10,
+        marginBottom: 16,
+        paddingLeft: 8,
+    },
+    productsTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
     },
     checkboxContainer: {
         flexDirection: "row",
@@ -128,5 +146,34 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontSize: 16,
         color: '#000',
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
     },
 });

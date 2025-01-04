@@ -1,4 +1,4 @@
-import { Text, StyleSheet, FlatList, Button } from 'react-native';
+import { Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'expo-router';
@@ -16,45 +16,48 @@ export default function Tab() {
 
     useEffect(() => {
         // Fetch Suppliers
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`, {
-            headers: { Authorization: `Bearer ${session}` }
-        })
-            .then(res => setSuppliers(res.data)) 
-            .catch(err => console.error(err));
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/suppliers`)
+            .then(res => setSuppliers(res.data))
+            .catch(err => console.error(`Error Fetching Suppliers`, err));
 
         // Fetch Stores
-        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, {
-            headers: { Authorization: `Bearer ${session}` }
-        })
+        axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`)
             .then(res => setStores(res.data))
-            .catch(err => console.error(err));
+            .catch(err => console.error(`Error Fetching Stores`, err));
 
         // Fetch Products
         axios.get(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/products`, {
-            headers: { Authorization: `Bearer ${session}` }
+            headers: {Authorization: `Bearer ${session}`}
         })
             .then(res => setProducts(res.data))
-            .catch(err => console.error(err));
-    }, [session]);
+            .catch(err => console.error(`Error Fetching Products`, err));
+    }, []);
 
-    if (suppliers.length === 0) return <Text>No suppliers found</Text>;
+    if (suppliers.length === 0) return <Text>No Suppliers Found</Text>;
 
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.container}>
+
+                {/* Create New Button */}
                 <Link href="/suppliers/create">
-                    <Button title="Create New Supplier" color="blue" />
+                    <TouchableOpacity
+                        style={[styles.button, styles.submitButton]}
+                    >
+                        <Text style={styles.submitButtonText}>Create New</Text>
+                    </TouchableOpacity>
                 </Link>
 
+                {/* Store Card Loop */}
                 <FlatList
                     data={suppliers}
                     renderItem={({ item }) => {
                         const storeList = stores.filter(store =>
-                            store.supplier_id.includes(item._id) 
+                            store.supplier_id.includes(item._id)
                         );
 
                         const productList = products.filter(product =>
-                            item.product_id.includes(product._id) 
+                            item.product_id.includes(product._id)
                         );
 
                         return (
@@ -78,9 +81,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    noData: {
-        fontSize: 16,
-        fontStyle: 'italic',
-        color: '#777',
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
     },
 });

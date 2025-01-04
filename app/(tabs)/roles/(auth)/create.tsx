@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useSession } from "@/contexts/AuthContext";
 import { useRouter } from "expo-router";
-import { Text, TextInput, StyleSheet, Button, View } from "react-native";
+import { Text, TextInput, StyleSheet, TouchableOpacity, View } from "react-native";
 import useAPI from '@/hooks/useAPI';
+import axios from "axios";
 
 export default function Page() {
     const router = useRouter();
@@ -13,7 +14,7 @@ export default function Page() {
         description: "",
     });
 
-    const { postRequest, data, loading, error } = useAPI();
+    const { loading, error } = useAPI();
 
     const handleChange = (e: any) => {
         setForm(prevState => ({
@@ -23,21 +24,23 @@ export default function Page() {
     };
 
     const handleSubmit = () => {
-        postRequest(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/roles`, form, {
-            headers: {
-                Authorization: `Bearer ${session}`
-            }
-        }, (data) => {
-            router.push(`/roles`);
-        });
+        axios.
+            post(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/roles`, form, {
+                headers: { Authorization: `Bearer ${session}` },
+            })
+            .then(() => router.push(`/roles`))
+            .catch(err => console.error(`Error Creating Role`, err))
+    };
+
+    const handleGoBack = () => {
+        router.push(`/roles`);
     };
 
     if (loading === true) return <Text>Loading API...</Text>
 
     return (
-        <View>
+        <View style={styles.container}>
             {/* Title Field */}
-            <Text>Title</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Title'
@@ -47,7 +50,6 @@ export default function Page() {
             />
 
             {/* Description Field */}
-            <Text>Description</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Description'
@@ -59,12 +61,24 @@ export default function Page() {
             {/* Error Text */}
             <Text>{error}</Text>
 
-            {/* Submit Button */}
-            <Button
-                onPress={handleSubmit}
-                title="Submit"
-                color="#841584"
-            />
+            <View style={styles.buttonRow}>
+
+                {/* Submit Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.submitButton]}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </TouchableOpacity>
+
+                {/* Go Back Button */}
+                <TouchableOpacity
+                    style={[styles.button, styles.goBackButton]}
+                    onPress={handleGoBack}
+                >
+                    <Text style={styles.goBackButtonText}>Go Back</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 };
@@ -72,8 +86,42 @@ export default function Page() {
 const styles = StyleSheet.create({
     input: {
         height: 40,
-        margin: 10,
+        borderColor: "#ccc",
         borderWidth: 1,
-        padding: 10
-    }
+        marginBottom: 16,
+        paddingLeft: 8,
+    },
+    container: {
+        padding: 16,
+        flex: 1,
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        gap: 16,
+        marginTop: 16,
+    },
+    button: {
+        borderRadius: 50,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    goBackButton: {
+        backgroundColor: "#E9E1FF",
+        borderWidth: 2,
+        borderColor: "#65558F",
+    },
+    goBackButtonText: {
+        color: "#65558F",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    submitButton: {
+        backgroundColor: "#65558F",
+    },
+    submitButtonText: {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        textAlign: "center",
+    },
 });
