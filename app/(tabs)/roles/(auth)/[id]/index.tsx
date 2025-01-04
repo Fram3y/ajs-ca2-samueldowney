@@ -69,14 +69,12 @@ export default function Tab() {
                     title="Delete"
                     color="#D32F2F"
                     onPress={handleDelete}
-                    style={styles.deleteButton}
                 />
 
                 {/* Go Back Button */}
                 <Button 
                     title="Go Back"
                     onPress={handleGoBack}
-                    style={styles.goBackButton}
                 />
             </SafeAreaView>
         </SafeAreaProvider>
@@ -122,8 +120,8 @@ const styles = StyleSheet.create({
     },
     goBackButton: {
         marginTop: 20,
-        backgroundColor: '#4CAF50', // Green color for "Go Back" button
-        width: '80%',  // Make the button a bit wider
+        backgroundColor: '#4CAF50',
+        width: '80%',
         borderRadius: 8,
     },
 });

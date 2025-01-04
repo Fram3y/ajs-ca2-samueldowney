@@ -3,15 +3,22 @@ import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import { View, Text, TextInput, StyleSheet, CheckBox, Button } from "react-native";
+import { RoleTypeID, StoreTypeID } from "@/types";
+
+interface FormState {
+    store_id: string[];
+    role_id: string[];
+    [key: string]: any;
+}
 
 export default function Page() {
-    const [stores, setStores] = useState([]);
-    const [roles, setRoles] = useState([]);
+    const [stores, setStores] = useState<StoreTypeID[]>([]);
+    const [roles, setRoles] = useState<RoleTypeID[]>([]);
 
     const router = useRouter();
     const { session } = useSession();
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<FormState>({
         name: "",
         email: "",
         address: "",
@@ -39,7 +46,7 @@ export default function Page() {
             .catch(err => console.error(err));
     }, [session]);
 
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         setForm(prevState => ({
             ...prevState,
             [e.target.id]: e.target.value

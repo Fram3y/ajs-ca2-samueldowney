@@ -5,12 +5,12 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { useSession } from '@/contexts/AuthContext';
 import EmployeeItem from '@/components/EmployeeItem';
-import { EmployeeTypeID } from '@/types';
+import { EmployeeTypeID, RoleTypeID, StoreTypeID, EntityType } from '@/types';
 
 export default function Tab() {
-    const [employees, setEmployees] = useState([]);
-    const [stores, setStores] = useState([]);
-    const [roles, setRoles] = useState([]);
+    const [employees, setEmployees] = useState<EmployeeTypeID[]>([]);
+    const [stores, setStores] = useState<StoreTypeID[]>([]);
+    const [roles, setRoles] = useState<RoleTypeID[]>([]);
     const { session } = useSession();
 
     useEffect(() => {
@@ -39,10 +39,10 @@ export default function Tab() {
             .catch((err) => console.error('Error fetching roles:', err));
     }, []);
 
-    const getDataById = (ids, entities) => {
-        // Helper function to map IDs to their corresponding entities
+    // Helper function to map IDs to their corresponding entities
+    const getDataById = <T extends EntityType>(ids: string[], entities: T[]): T[] => {
         return entities.filter((entity) => ids.includes(entity._id));
-    };
+    };    
 
     if (employees.length === 0) return <Text style={styles.noData}>No employees found</Text>;
     

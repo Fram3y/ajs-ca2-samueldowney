@@ -5,15 +5,15 @@ import { useSession } from '@/contexts/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import axios from 'axios';
-import { EmployeeType, StoreType, RoleType } from '@/types';
+import { EmployeeType, StoreTypeID, RoleTypeID } from '@/types';
 
 export default function Tab() {
     const [employee, setEmployee] = useState<EmployeeType | null>(null);
-    const [stores, setStores] = useState<StoreType[]>([]);
-    const [roles, setRoles] = useState<RoleType[]>([]);
+    const [stores, setStores] = useState<StoreTypeID[]>([]);
+    const [roles, setRoles] = useState<RoleTypeID[]>([]);
 
-    const [filteredStores, setFilteredStores] = useState<StoreType[]>([]);
-    const [filteredRoles, setFilteredRoles] = useState<RoleType[]>([]);
+    const [filteredStores, setFilteredStores] = useState<StoreTypeID[]>([]);
+    const [filteredRoles, setFilteredRoles] = useState<RoleTypeID[]>([]);
 
     const { id } = useLocalSearchParams();
     const { session } = useSession();
@@ -132,7 +132,6 @@ export default function Tab() {
                 <Button
                     title="Go Back"
                     onPress={handleGoBack}
-                    style={styles.goBackButton}
                 />
 
             </SafeAreaView>

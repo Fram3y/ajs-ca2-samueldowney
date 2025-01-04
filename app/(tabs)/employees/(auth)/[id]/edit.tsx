@@ -2,14 +2,24 @@ import { useEffect, useState } from "react";
 import { Text, TextInput, StyleSheet, Button, View, CheckBox } from 'react-native';
 import { useSession } from "@/contexts/AuthContext";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { EmployeeType } from "@/types";
+import { EmployeeType, RoleTypeID, StoreTypeID } from "@/types";
 import useAPI from '@/hooks/useAPI';
 import axios from "axios";
 
+interface FormType {
+    name: string;
+    email: string;
+    address: string;
+    dob: Date | null;
+    phone_number: string;
+    store_id: string[];
+    role_id: string[];
+}
+
 export default function Page() {
     const [employee, setEmployee] = useState<EmployeeType | null>(null);
-    const [stores, setStores] = useState([]);
-    const [roles, setRoles] = useState([]);
+    const [stores, setStores] = useState<StoreTypeID[]>([]);
+    const [roles, setRoles] = useState<RoleTypeID[]>([]);
 
     const { session } = useSession();
     const { id } = useLocalSearchParams();
@@ -17,7 +27,7 @@ export default function Page() {
 
     const { putRequest, error } = useAPI();
 
-    const [form, setForm] = useState<EmployeeType>({
+    const [form, setForm] = useState<FormType>({
         name: "",
         email: "",
         address: "",
