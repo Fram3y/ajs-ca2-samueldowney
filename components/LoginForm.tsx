@@ -2,16 +2,18 @@ import { Text, TextInput, StyleSheet, Button, View } from 'react-native';
 import { useState } from 'react';
 import axios from 'axios';
 import { useSession } from '@/contexts/AuthContext';
-import { IAuthContext } from '@/types';
+import { useRouter } from 'expo-router';
 
 export default function LoginForm() {
     const [form, setForm] = useState({
         email: "",
         password: ""
     });
+
     const [error, setError] = useState("");
 
     const { signIn } = useSession();
+    const router = useRouter();
 
     const handleChange = (e: any) => {
         setForm(prevState => ({
@@ -21,21 +23,23 @@ export default function LoginForm() {
     }
 
     const handlePress = () => {
-        console.log("Clicked");
-
         axios.post('https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/users/login', {
             email: form.email,
             password: form.password
         })
-             .then(response => {
+            .then(response => {
                 console.log(response.data.token)
                 signIn(response.data.token);
-             })
-             .catch(e => {
+            })
+            .catch(e => {
                 console.log(e);
                 setError(e.response.data.message);
-             });
+            });
     };
+
+    const handleRoute = () => {
+        router.push(`/(tabs)/createUser`)
+    }
 
     return (
         <View>
@@ -57,13 +61,19 @@ export default function LoginForm() {
 
             <Text>{error}</Text>
 
-            <Button 
+            <Button
                 onPress={handlePress}
-                title="Submit"
+                title="Log In"
                 color="#841584"
             />
+
+            <Button
+                onPress={handleRoute}
+                title="Create Account"
+                color="blue"
+            />
         </View>
-    );   
+    );
 }
 
 const styles = StyleSheet.create({
