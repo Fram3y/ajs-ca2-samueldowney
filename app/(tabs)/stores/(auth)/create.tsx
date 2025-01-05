@@ -53,7 +53,7 @@ export default function Page() {
         axios.post(`https://ajs-ca1-samdowney-qyjyroi1h-samuels-projects-61c25dee.vercel.app/api/stores`, form, {
             headers: { Authorization: `Bearer ${session}` }
         })
-            .then(res => router.push(`/stores`))
+            .then(() => router.push(`/stores`))
             .catch(err => console.error(`Error Updating Store:`, err))
     };
 
